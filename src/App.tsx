@@ -18,7 +18,7 @@ import ErrorPage from "./pages/ErrorPage";
 export default function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/Fin-Frontend">
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
