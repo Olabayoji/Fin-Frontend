@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DataContext } from "../util/DataContext";
 import LoadingSpinner from "../components/LoadingSpinner";
 import StockChart from "../components/Chart/StockChart";
@@ -21,12 +21,53 @@ const HomePage = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [showPredictionInfo, setShowPredictionInfo] = useState(false);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<null | string>();
+
+  const [taskId, setTaskId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    const checkTaskStatus = async () => {
+      if (!taskId) return;
+
+      try {
+        const response = await axios.get(
+          BASE_URL + `/api/get_task_result?task_id=${taskId}`
+        );
+        const { status, result } = response.data;
+        // console.log(response.data);
+
+        if (status.toLowerCase() === "success") {
+          updatePredictionData(result);
+          setShowPredictionInfo(false);
+          setLoading(false);
+          clearInterval(timer); // Stop polling when the task is complete
+        } else if (status === "Failure") {
+          setError(result);
+          clearInterval(timer); // Stop polling on failure
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("Error checking task status:", err);
+      }
+    };
+
+    if (taskId) {
+      timer = setInterval(checkTaskStatus, 5000); // Poll every 5 seconds
+    }
+
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [taskId]);
 
   const analyseStockHandler = async (threshold: number, days_out: number) => {
     try {
       setLoading(true);
-      setError(false);
+      setError(null);
       updatePredictionData(null);
 
       const response = await axios.post(
@@ -42,9 +83,7 @@ const HomePage = (props: Props) => {
           },
         }
       );
-      updatePredictionData(response.data);
-      setShowPredictionInfo(false);
-      setLoading(false);
+      setTaskId(response.data.task_id); // Save the task ID
     } catch (error: any) {
       setError(error.message);
       setLoading(false);
