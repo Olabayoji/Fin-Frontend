@@ -95,3 +95,7 @@ foreignObject p {
 .plotly .user-select-none{
   margin: auto !important;
 }
+
+.rd3t-tree-container{
+  height: 100%;
+}

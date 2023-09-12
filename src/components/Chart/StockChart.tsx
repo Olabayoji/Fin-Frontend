@@ -72,7 +72,9 @@ const StockChart = (props: Props) => {
     "RSI",
     "Bollinger Band",
     "Volume",
-    "Stochastic Oscillator",
+    "Stochastic Oscillator Slow",
+    "Stochastic Oscillator Fast",
+    "Stochastic Oscillator Full",
     "Force Index",
   ];
 
@@ -82,6 +84,8 @@ const StockChart = (props: Props) => {
   });
 
   const handleIndicatorSelect = (selectedOption: any) => {
+    console.log(selectedOption);
+
     setSelectedIndicators(selectedOption);
   };
   const checkIfIndicatorExists = (value: string): boolean => {
@@ -99,11 +103,12 @@ const StockChart = (props: Props) => {
       indicator.value.toLowerCase() === "elder ray" ||
       indicator.value.toLowerCase() === "macd" ||
       indicator.value.toLowerCase() === "rsi" ||
-      indicator.value.toLowerCase() === "force index"
+      indicator.value.toLowerCase() === "force index" ||
+      indicator.value.toLowerCase() === "stochastic oscillator slow" ||
+      indicator.value.toLowerCase() === "stochastic oscillator fast" ||
+      indicator.value.toLowerCase() === "stochastic oscillator full"
     ) {
       height += 100;
-    } else if (indicator.value.toLowerCase() === "stochastic oscillator") {
-      height += 300;
     }
   });
 
@@ -439,31 +444,95 @@ const StockChart = (props: Props) => {
         );
       },
     },
+    "stochastic oscillator slow": {
+      height: rsiHeight,
+      chart: (height: number) => {
+        const isLast =
+          selectedIndicators[lastIndex()]?.label ===
+          "Stochastic Oscillator Slow";
+        cumulativeHeight += height;
+        const origin = [0, previousHeight];
+        previousHeight = cumulativeHeight;
+        return (
+          <Chart
+            id={11}
+            yExtents={[0, 100]}
+            height={height}
+            origin={origin}
+            padding={{ top: 20, bottom: 10 }}
+          >
+            <SloStochasticOscillator height={height} slowSTO={slowSTO} />,
+          </Chart>
+        );
+      },
+    },
+    "stochastic oscillator fast": {
+      height: rsiHeight,
+      chart: (height: number) => {
+        const isLast =
+          selectedIndicators[lastIndex()]?.label ===
+          "Stochastic Oscillator Fast";
+        cumulativeHeight += height;
+        const origin = [0, previousHeight];
+        previousHeight = cumulativeHeight;
+        return (
+          <Chart
+            id={12}
+            yExtents={[0, 100]}
+            height={height}
+            origin={origin}
+            padding={{ top: 20, bottom: 10 }}
+          >
+            <FastStochasticOscillator height={height} slowSTO={fastSTO} />,
+          </Chart>
+        );
+      },
+    },
+    "stochastic oscillator full": {
+      height: rsiHeight,
+      chart: (height: number) => {
+        const isLast =
+          selectedIndicators[lastIndex()]?.label ===
+          "Stochastic Oscillator Full";
+        cumulativeHeight += height;
+        const origin = [0, previousHeight];
+        previousHeight = cumulativeHeight;
+        return (
+          <Chart
+            id={13}
+            yExtents={[0, 100]}
+            height={height}
+            origin={origin}
+            padding={{ top: 20, bottom: 10 }}
+          >
+            <FullStochasticOscillator height={height} slowSTO={fullSTO} />,
+          </Chart>
+        );
+      },
+    },
     // "stochastic oscillator": {
-    //   height: rsiHeight,
     //   chart: (height: number) => {
-    //     const isLast =
-    //       selectedIndicators[lastIndex()]?.label === "Stochastic Oscillator";
+    //     const isLast = selectedIndicators[lastIndex()]?.label === "Force Index";
     //     cumulativeHeight += height;
+    //     const origin = [0, previousHeight];
+    //     previousHeight = cumulativeHeight;
+
     //     const stoCharts = [
-    //       <SloStochasticOscillator height={height} slowSTO={slowSTO} />,
     //       <FastStochasticOscillator height={height} slowSTO={slowSTO} />,
     //       <FullStochasticOscillator height={height} slowSTO={slowSTO} />,
     //     ];
-    //     return stoCharts.map((chart, index) => {
-    //       const currentOrigin = [0, previousHeight + index * 100];
-    //       return (
-    //         <Chart
-    //           id={10 + index}
-    //           yExtents={[0, 100]}
-    //           height={height}
-    //           origin={currentOrigin}
-    //           padding={{ top: 20, bottom: 10 }}
-    //         >
-    //           {chart}
-    //         </Chart>
-    //       );
-    //     });
+
+    //     return (
+    //       <Chart
+    //         id={11}
+    //         yExtents={[0, 100]}
+    //         height={height}
+    //         origin={origin}
+    //         padding={{ top: 20, bottom: 10 }}
+    //       >
+    //         <SloStochasticOscillator height={height} slowSTO={slowSTO} />,
+    //       </Chart>
+    //     );
     //   },
     // },
   };

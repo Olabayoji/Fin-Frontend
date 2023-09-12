@@ -222,88 +222,90 @@ const TreeComponent = (props: Props) => {
       {" "}
       {tree !== undefined && (
         <>
+          <p className="text-center">
+            <span className={"text-center"}>Decision Tree Valid:</span>{" "}
+            {allLeafDecided ? (
+              <span className="text-green-500 font-semibold">True</span>
+            ) : (
+              <span className="text-red-500 font-semibold">False</span>
+            )}
+          </p>
+          {tree && !loading && (
+            <div className="grid grid-cols-2 w-fit mx-auto gap-x-3 items-center">
+              <button
+                type="button"
+                className="h-10 px-5 m-2 mt-9 mx-auto text-center text-gray-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
+                onClick={() => {
+                  updateTree(undefined);
+                  updateAccuracyData(undefined);
+                }}
+              >
+                Clear Tree
+              </button>
+              <button
+                type="button"
+                className={`${
+                  !allLeafDecided
+                    ? "cursor-not-allowed bg-[#DBDBD7] text-[#A8A8A4]"
+                    : `text-gray-100 bg-gray-700 hover:bg-gray-800`
+                } h-10 px-5 m-2 mt-9 mx-auto text-center grid items-center  transition-colors duration-150  rounded-lg focus:shadow-outline `}
+                disabled={!allLeafDecided}
+                onClick={() => analyseTree(tree)}
+              >
+                Analyse Tree
+              </button>
+            </div>
+          )}
+          {accuracyData && !loading && (
+            <div className="flex justify-center items-center my-8 max-w-xl mx-auto gap-x-8">
+              {/* Card for Class Accuracy */}
+              <div className="flex flex-col p-4 bg-white shadow-md rounded-md border text-center flex-grow">
+                <h2 className="font-semibold text-gray-700 mb-2 border-b">
+                  Class Accuracy
+                </h2>
+                <ul>
+                  {Object.entries(accuracyData!.class_accuracies!).map(
+                    ([className, classAcc]) => (
+                      <li key={className} className="mb-1">
+                        <span className="font-semibold text-gray-700">
+                          {className === "0"
+                            ? "No Trend"
+                            : className === "1"
+                            ? "Up Trend"
+                            : "Down Trend"}
+                          :&nbsp;
+                        </span>
+                        <span className="font-semibold text-blue-500">
+                          {(classAcc * 100).toFixed(2)}%
+                        </span>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+              {/* Card for Overall Accuracy */}
+              <div className="flex flex-col p-4 bg-white shadow-md rounded-md border mr-4 text-center h-full flex-grow">
+                <h2 className="font-semibold text-gray-700 mb-2 border-b">
+                  Overall Accuracy
+                </h2>
+                <p className="text-xl font-extrabold text-blue-500 text-center">
+                  {(accuracyData!.overall_accuracy! * 100).toFixed(2)}%
+                </p>
+              </div>
+            </div>
+          )}
+          {loading && (
+            <div className="text-center">
+              <LoadingSpinner />
+              <p>Analysing your decision tree...</p>
+            </div>
+          )}
           <div
             className="relative"
             ref={treeContainerRef}
             id="treeWrapper"
-            style={{ width: "100%", height: "80%" }}
+            style={{ width: "100%", height: "50%" }}
           >
-            <p className="text-center">
-              <span className={"text-center"}>Decision Tree Valid:</span>{" "}
-              {allLeafDecided ? (
-                <span className="text-green-500 font-semibold">True</span>
-              ) : (
-                <span className="text-red-500 font-semibold">False</span>
-              )}
-            </p>
-            {tree && !loading && (
-              <div className="grid grid-cols-2 w-fit mx-auto gap-x-3 items-center">
-                <button
-                  type="button"
-                  className="h-10 px-5 m-2 mt-9 mx-auto text-center text-gray-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
-                  onClick={() => updateTree(undefined)}
-                >
-                  Clear Tree
-                </button>
-                <button
-                  type="button"
-                  className={`${
-                    !allLeafDecided
-                      ? "cursor-not-allowed bg-[#DBDBD7] text-[#A8A8A4]"
-                      : `text-gray-100 bg-gray-700 hover:bg-gray-800`
-                  } h-10 px-5 m-2 mt-9 mx-auto text-center grid items-center  transition-colors duration-150  rounded-lg focus:shadow-outline `}
-                  disabled={!allLeafDecided}
-                  onClick={() => analyseTree(tree)}
-                >
-                  Analyse Tree
-                </button>
-              </div>
-            )}
-            {accuracyData && !loading && (
-              <div className="flex justify-center items-center my-8 max-w-xl mx-auto gap-x-8">
-                {/* Card for Class Accuracy */}
-                <div className="flex flex-col p-4 bg-white shadow-md rounded-md border text-center flex-grow">
-                  <h2 className="font-semibold text-gray-700 mb-2 border-b">
-                    Class Accuracy
-                  </h2>
-                  <ul>
-                    {Object.entries(accuracyData!.class_accuracies!).map(
-                      ([className, classAcc]) => (
-                        <li key={className} className="mb-1">
-                          <span className="font-semibold text-gray-700">
-                            {className === "0"
-                              ? "No Trend"
-                              : className === "1"
-                              ? "Up Trend"
-                              : "Down Trend"}
-                            :&nbsp;
-                          </span>
-                          <span className="font-semibold text-blue-500">
-                            {(classAcc * 100).toFixed(2)}%
-                          </span>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-                {/* Card for Overall Accuracy */}
-                <div className="flex flex-col p-4 bg-white shadow-md rounded-md border mr-4 text-center h-full flex-grow">
-                  <h2 className="font-semibold text-gray-700 mb-2 border-b">
-                    Overall Accuracy
-                  </h2>
-                  <p className="text-xl font-extrabold text-blue-500 text-center">
-                    {(accuracyData!.overall_accuracy! * 100).toFixed(2)}%
-                  </p>
-                </div>
-              </div>
-            )}
-            {loading && (
-              <div className="text-center">
-                <LoadingSpinner />
-                <p>Analysing your decision tree...</p>
-              </div>
-            )}
-
             <Tree
               data={tree!}
               orientation="vertical"
@@ -330,6 +332,16 @@ const TreeComponent = (props: Props) => {
           </div>
         </>
       )}
+      <div className="grid justify-center">
+        <a
+          href="https://forms.gle/s8JtapoC2An1TqZE8"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white px-4 py-2 bg-green-600 rounded z-[100000]"
+        >
+          Take Survey
+        </a>
+      </div>
       <AddRuleModal
         isOpen={isModalOpen || Boolean(node)}
         onClose={() => {

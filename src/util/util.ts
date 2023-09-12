@@ -1,4 +1,5 @@
-export const BASE_URL = 'https://web-production-7b73.up.railway.app'
+export const BASE_URL = 'https://web-production-ef0b6.up.railway.app'
+
 export interface IOHLCData {
     readonly close: number;
     readonly date: Date;

@@ -54,7 +54,7 @@ const HomePage = (props: Props) => {
     };
 
     if (taskId) {
-      timer = setInterval(checkTaskStatus, 5000); // Poll every 5 seconds
+      timer = setInterval(checkTaskStatus, 10000); // Poll every 10 seconds
     }
 
     return () => {

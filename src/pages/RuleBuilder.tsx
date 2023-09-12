@@ -1,6 +1,7 @@
 import React from "react";
 import TreeComponent from "../components/Tree/TreeComponent";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
