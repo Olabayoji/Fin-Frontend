@@ -52,6 +52,7 @@ const AnalysisForm = (props: Props) => {
                 type="number"
                 name="threshold"
                 min="0.5"
+                max="10"
                 step="0.5"
                 id="threshold"
               />

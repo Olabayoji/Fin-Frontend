@@ -97,6 +97,15 @@ const HomePage = (props: Props) => {
     );
     return cookieValue ? cookieValue.pop() : "";
   };
+  if (window.innerWidth < 768)
+    return (
+      <div className="grid h-full justify-center items-center">
+        <p className="text-center font-semibold ">
+          Please use a PC for the best experience.
+        </p>
+      </div>
+    );
+
   return (
     <main className="max-w-[1720px] w-full mx-auto px-4 pt-20">
       {loadingStock && (

@@ -201,7 +201,7 @@ const ModelAnalysis = (props: Props) => {
                             {" "}
                             <AiOutlineQuestionCircle className="w-3 h-3 absolute top-2" />
                           </button>
-                          <span className="pointer-events-none absolute text-justify z-20  w-max max-w-[300px] rounded font-normal bg-slate-700 px-2 py-1 text-sm  text-gray-50 opacity-0 shadow transition-opacity group-hover:opacity-100">
+                          <span className="pointer-events-none absolute right-6 text-justify z-20  w-max max-w-[300px] rounded font-normal bg-slate-700 px-2 py-1 text-sm  text-gray-50 opacity-0 shadow transition-opacity group-hover:opacity-100">
                             This is the proportion of model that contain both
                             the antecedent (rule) and the consequent (trend). It
                             measures how frequently the rule and trend appear
@@ -219,7 +219,7 @@ const ModelAnalysis = (props: Props) => {
                             {" "}
                             <AiOutlineQuestionCircle className="w-3 h-3 absolute top-2" />
                           </button>
-                          <span className="pointer-events-none absolute text-justify w-max max-w-[300px] rounded font-normal bg-slate-700 px-2 py-1 text-sm z-[100000]  text-gray-50 opacity-0 shadow transition-opacity group-hover:opacity-100">
+                          <span className="pointer-events-none absolute right-24 text-justify w-max max-w-[300px] rounded font-normal bg-slate-700 px-2 py-1 text-sm z-[100000]  text-gray-50 opacity-0 shadow transition-opacity group-hover:opacity-100">
                             Conviction is a measure of the implication of a
                             rule. It indicates how much the consequent (trend)
                             depends on the antecedent (rule). A conviction value
